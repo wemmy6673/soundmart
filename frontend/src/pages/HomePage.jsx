@@ -43,11 +43,11 @@ export default function HomePage({ setPage, setViewProduct }) {
       </section>
 
       {/* Featured Products */}
-      <section className="max-w-7xl mx-auto px-6 py-4 mb-2">
+      <section className="mx-44  py-4 mt-6 mb-2">
         <div className="flex items-center justify-between mb-8">
           <div>
             <h2 className="font-display text-4xl font-semibold">
-              Featured Products
+              HeadPhones for you
             </h2>
             <p className="text-gray-400 mt-1 text-sm">
               Our most-loved headphones this season
