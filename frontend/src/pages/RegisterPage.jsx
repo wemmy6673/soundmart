@@ -32,7 +32,7 @@ export default function RegisterPage({ setPage }) {
   const handleChange = (e) =>
     setForm((f) => ({ ...f, [e.target.name]: e.target.value }));
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
 
@@ -46,15 +46,13 @@ export default function RegisterPage({ setPage }) {
     }
 
     setLoading(true);
-    setTimeout(() => {
-      const result = register(form.name, form.email, form.password);
-      if (result.success) {
-        setPage("home");
-      } else {
-        setError(result.error);
-      }
-      setLoading(false);
-    }, 600);
+    const result = await register(form.name, form.email, form.password);
+    if (result.success) {
+      setPage("home");
+    } else {
+      setError(result.error);
+    }
+    setLoading(false);
   };
 
   // Placeholder — wire this up to real Google OAuth when backend is ready

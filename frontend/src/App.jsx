@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { CartProvider } from "./context/CartContext";
 import { AuthProvider } from "./context/Authcontext";
+import { useAuth } from "./context/Authcontext";
 import Navbar from "./components/Navbar";
 import CartDrawer from "./components/CartDrawer";
 import HomePage from "./pages/HomePage";
@@ -11,6 +12,7 @@ import RegisterPage from "./pages/RegisterPage";
 import Header from "./components/Header";
 
 export default function App() {
+  const  loading  = useAuth();
   const [page, setPage] = useState("home");
   const [viewProduct, setViewProduct] = useState(null);
 
@@ -23,6 +25,17 @@ export default function App() {
     setViewProduct(null);
     setPage("shop");
   };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-white">
+        <div className="text-center">
+          <p className="font-display text-2xl font-semibold tracking-tight mb-2">Soundmart</p>
+          <p className="text-sm text-gray-400">Loading...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <AuthProvider>

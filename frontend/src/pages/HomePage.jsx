@@ -43,7 +43,7 @@ export default function HomePage({ setPage, setViewProduct }) {
       </section>
 
       {/* Featured Products */}
-      <section className="mx-44  py-4 mt-6 mb-2">
+      <section className="mx-44 py-4 mt-6 mb-2">
         <div className="flex items-center justify-between mb-8">
           <div>
             <h2 className="font-display text-4xl font-semibold">
