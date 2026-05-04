@@ -1,9 +1,8 @@
 import { useState } from "react";
+import { toast } from "react-toastify";
 import { useAuth } from "../context/Authcontext";
 
 // ─── Google Button (mock until backend is ready) ──────────────────────────────
-// When your FastAPI backend is ready, replace this with:
-//   import GoogleButton from "../components/GoogleButton";
 function GoogleButton({ label, onClick }) {
   return (
     <button
@@ -48,16 +47,17 @@ export default function RegisterPage({ setPage }) {
     setLoading(true);
     const result = await register(form.name, form.email, form.password);
     if (result.success) {
-      setPage("home");
+      toast.success("Account created! Please sign in to continue.");
+      setPage("login");
     } else {
       setError(result.error);
+      toast.error(result.error);
     }
     setLoading(false);
   };
 
-  // Placeholder — wire this up to real Google OAuth when backend is ready
   const handleGoogleClick = () => {
-    setError("Google sign-up coming soon — backend not connected yet.");
+    toast.info("Google sign-up coming soon — backend not connected yet.");
   };
 
   return (

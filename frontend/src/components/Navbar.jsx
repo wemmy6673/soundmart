@@ -4,6 +4,7 @@ import { BsCartFill } from "react-icons/bs";
 import SearchInput from "./SearchInput";
 import { BsPerson } from "react-icons/bs";
 import { BsCart3 } from "react-icons/bs";
+import { toast } from "react-toastify";
 
 
 
@@ -11,6 +12,12 @@ import { BsCart3 } from "react-icons/bs";
 export default function Navbar({ setPage }) {
   const { cart, setCartOpen } = useCart();
   const { user, logout } = useAuth();
+
+  const handleLogout = () => {
+    logout();
+    toast.success("You've been logged out.");
+    setPage("home");
+  };
 
   return (
     <nav className="sticky top-0 z-50 bg-white">
@@ -54,7 +61,7 @@ export default function Navbar({ setPage }) {
                 Hi, {user.name}
               </span>
               <button
-                onClick={logout}
+                onClick={handleLogout}
                 className="text-sm text-gray-500 hover:text-black transition-colors"
               >
                 Logout

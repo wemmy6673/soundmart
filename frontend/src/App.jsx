@@ -2,6 +2,8 @@ import { useState } from "react";
 import { CartProvider } from "./context/CartContext";
 import { AuthProvider } from "./context/Authcontext";
 import { useAuth } from "./context/Authcontext";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import Navbar from "./components/Navbar";
 import CartDrawer from "./components/CartDrawer";
 import HomePage from "./pages/HomePage";
@@ -57,6 +59,17 @@ export default function App() {
           {page === "register" && <RegisterPage setPage={setPage} />}
 
           <CartDrawer />
+
+          <ToastContainer
+        position="top-right"
+        autoClose={3500}
+        hideProgressBar={false}
+        newestOnTop
+        closeOnClick
+        pauseOnHover
+        draggable
+        theme="light"
+      />
         </div>
       </CartProvider>
     </AuthProvider>

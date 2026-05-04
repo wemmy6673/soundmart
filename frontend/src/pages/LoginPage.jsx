@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { toast } from "react-toastify";
 import { useAuth } from "../context/Authcontext";
 
 // ─── Google Button (mock until backend is ready) ──────────────────────────────
@@ -36,15 +37,17 @@ export default function LoginPage({ setPage }) {
     setLoading(true);
     const result = await login(form.email, form.password);
     if (result.success) {
+      toast.success("You're now signed in.");
       setPage("home");
     } else {
       setError(result.error);
+      toast.error(result.error);
     }
     setLoading(false);
   };
 
   const handleGoogleClick = () => {
-    setError("Google sign-in coming soon — backend not connected yet.");
+    toast.info("Google sign-in coming soon — backend not connected yet.");
   };
 
   return (
@@ -52,10 +55,8 @@ export default function LoginPage({ setPage }) {
       <div className="w-full max-w-md fade-in">
         {/* Brand */}
         <div className="text-center mb-10">
-          <button onClick={() => setPage("home")} className="font-display text-3xl font-semibold tracking-tight">
-            SONUS
-          </button>
-          <p className="text-gray-400 mt-2 text-sm">Welcome back</p>
+         
+          <p className="text-black mt-2 text-2xl">Welcome back</p>
         </div>
 
         {/* Card */}
