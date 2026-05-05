@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { useAuth } from "../context/Authcontext";
+import { Link } from "react-router-dom";
 
 // ─── Google Button (mock until backend is ready) ──────────────────────────────
 function GoogleButton({ label, onClick }) {
@@ -131,12 +132,11 @@ export default function LoginPage({ setPage }) {
         {/* Register Link */}
         <p className="text-center text-sm text-gray-500 mt-6">
           Don't have an account?{" "}
-          <button
-            onClick={() => setPage("register")}
+          <Link to="/register"
             className="font-medium text-black underline underline-offset-4"
           >
             Create one
-          </button>
+          </Link>
         </p>
       </div>
     </div>

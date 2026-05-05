@@ -5,6 +5,7 @@ import SearchInput from "./SearchInput";
 import { BsPerson } from "react-icons/bs";
 import { BsCart3 } from "react-icons/bs";
 import { toast } from "react-toastify";
+import { Link } from "react-router-dom";
 
 
 
@@ -32,7 +33,7 @@ export default function Navbar({ setPage }) {
 
         {/* Nav Links */}
         <div className="hidden md:flex items-center gap-8">
-          {["Categories", "Deals", "What’s New", "Delivery"].map((link) => (
+          {/* {["Categories", "Deals", "What’s New", "Delivery"].map((link) => (
             <button
               key={link}
               onClick={() => link === "Categories" && setPage("categories")}
@@ -40,7 +41,11 @@ export default function Navbar({ setPage }) {
             >
               {link}
             </button>
-          ))}
+          ))} */}
+          <Link to="/"     className="nav-link text-lg font-medium text-gray-700 hover:text-black transition-colors">Categories</Link>
+          <Link to="/shop" className="nav-link text-lg font-medium text-gray-700 hover:text-black transition-colors">Deals</Link>
+          <Link to="/whats-new" className="nav-link text-lg font-medium text-gray-700 hover:text-black transition-colors">What's New</Link>
+          <Link to="/delivery" className="nav-link text-lg font-medium text-gray-700 hover:text-black transition-colors">Delivery</Link>
         </div>
         <div className="max-w-md w-full">  
         <SearchInput className="mx-4 md:mx-0"
@@ -57,24 +62,23 @@ export default function Navbar({ setPage }) {
           {/* Auth */}
           {user ? (
             <div className="flex items-center gap-3">
-              <span className="text-sm font-medium text-gray-700 hidden md:block">
+              <span className="text-md font-medium text-gray-700 hidden md:block">
                 Hi, {user.name}
               </span>
               <button
                 onClick={handleLogout}
-                className="text-sm text-gray-500 hover:text-black transition-colors"
+                className="text-md text-white bg-red-500 p-2 rounded-lg transition-colors"
               >
                 Logout
               </button>
             </div>
           ) : (
-            <div
-              onClick={() => setPage("login")}
+            <Link to="/login"
               className="text-lg font-medium items-center cursor-pointer text-gray-700 hover:text-black transition-colors hidden md:flex md:flex-row"
             >
               <div className=""><BsPerson className="inline-block text-2xl mr-1" /></div>
               <h1>Account</h1>
-            </div>
+            </Link>
           )}
 
           {/* Cart */}

@@ -4,7 +4,7 @@ import products from "../data/product";
 
 const categories = ["All", "Over-Ear", "On-Ear", "In-Ear"];
 
-export default function ShopPage({ setViewProduct }) {
+export default function ShopPage() {
   const [activeCategory, setActiveCategory] = useState("All");
   const [sortBy, setSortBy] = useState("featured");
 
@@ -62,7 +62,7 @@ export default function ShopPage({ setViewProduct }) {
       {/* Grid */}
       <div className="grid grid-cols-2 md:grid-cols-3 gap-6 md:gap-8">
         {filtered.map((p) => (
-          <ProductCard key={p.id} product={p} onView={setViewProduct} />
+          <ProductCard key={p.id} product={p} />
         ))}
       </div>
     </section>

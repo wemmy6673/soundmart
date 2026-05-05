@@ -1,11 +1,32 @@
 import { useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import StarRating from "../components/StarRating";
 import { useCart } from "../context/CartContext";
+import products from "../data/product";
 
-export default function ProductPage({ product, onBack }) {
+export default function ProductPage() {
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const { addToCart } = useCart();
+
+  const product = products.find((p) => String(p.id) === String(id));
+
   const [qty, setQty] = useState(1);
   const [added, setAdded] = useState(false);
-  const { addToCart } = useCart();
+
+  if (!product) {
+    return (
+      <div className="max-w-7xl mx-auto px-6 py-24 text-center">
+        <p className="text-gray-400 text-lg">Product not found.</p>
+        <button
+          onClick={() => navigate("/shop")}
+          className="mt-6 text-sm font-medium underline underline-offset-4 text-gray-600 hover:text-black"
+        >
+          Back to Shop
+        </button>
+      </div>
+    );
+  }
 
   const handleAdd = () => {
     for (let i = 0; i < qty; i++) addToCart(product);
@@ -17,7 +38,7 @@ export default function ProductPage({ product, onBack }) {
     <section className="max-w-7xl mx-auto px-6 py-12 fade-in">
       {/* Back */}
       <button
-        onClick={onBack}
+        onClick={() => navigate("/shop")}
         className="flex items-center gap-2 text-sm text-gray-500 mb-8 hover:text-black transition-colors"
       >
         <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">

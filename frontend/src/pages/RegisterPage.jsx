@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { useAuth } from "../context/Authcontext";
+import { Link } from "react-router-dom";
 
 // ─── Google Button (mock until backend is ready) ──────────────────────────────
 function GoogleButton({ label, onClick }) {
@@ -66,9 +67,7 @@ export default function RegisterPage({ setPage }) {
 
         {/* Brand */}
         <div className="text-center mb-10">
-          <button onClick={() => setPage("home")} className="font-display text-3xl font-semibold tracking-tight">
-            SONUS
-          </button>
+          
           <p className="text-gray-400 mt-2 text-sm">Create your account</p>
         </div>
 
@@ -100,14 +99,14 @@ export default function RegisterPage({ setPage }) {
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1.5">
-                Full Name
+                FirstName
               </label>
               <input
                 type="text"
                 name="name"
                 value={form.name}
                 onChange={handleChange}
-                placeholder="Jane Doe"
+                placeholder="John"
                 required
                 className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-gray-900 transition-colors"
               />
@@ -178,12 +177,11 @@ export default function RegisterPage({ setPage }) {
         {/* Login Link */}
         <p className="text-center text-sm text-gray-500 mt-6">
           Already have an account?{" "}
-          <button
-            onClick={() => setPage("login")}
+          <Link to="/login"
             className="font-medium text-black underline underline-offset-4"
           >
             Sign in
-          </button>
+          </Link>
         </p>
       </div>
     </div>
