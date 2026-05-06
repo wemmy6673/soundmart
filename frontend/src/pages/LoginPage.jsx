@@ -1,45 +1,34 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import { useAuth } from "../context/Authcontext";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import GoogleButton from "../components/GoogleButton";
 
-// ─── Google Button (mock until backend is ready) ──────────────────────────────
-function GoogleButton({ label, onClick }) {
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      className="w-full flex items-center justify-center gap-3 border border-gray-200 rounded-xl py-3 text-sm font-medium hover:bg-gray-50 active:bg-gray-100 transition-colors"
-    >
-      <svg width="18" height="18" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
-        <path fill="#EA4335" d="M24 9.5c3.14 0 5.95 1.08 8.17 2.84l6.1-6.1C34.46 3.09 29.53 1 24 1 14.82 1 7.07 6.48 3.64 14.22l7.1 5.52C12.4 13.67 17.74 9.5 24 9.5z"/>
-        <path fill="#4285F4" d="M46.5 24.5c0-1.64-.15-3.22-.42-4.74H24v9h12.7c-.55 2.94-2.2 5.44-4.67 7.12l7.18 5.58C43.35 37.13 46.5 31.27 46.5 24.5z"/>
-        <path fill="#FBBC05" d="M10.74 28.26A14.63 14.63 0 019.5 24c0-1.48.26-2.9.72-4.24l-7.1-5.52A23.93 23.93 0 001 24c0 3.87.93 7.53 2.56 10.77l7.18-6.51z"/>
-        <path fill="#34A853" d="M24 47c5.53 0 10.17-1.83 13.55-4.96l-7.18-5.58c-1.83 1.23-4.18 1.95-6.37 1.95-6.26 0-11.6-4.17-13.26-9.76l-7.18 6.51C7.07 41.52 14.82 47 24 47z"/>
-      </svg>
-      {label}
-    </button>
-  );
-}
 // ─────────────────────────────────────────────────────────────────────────────
 
 export default function LoginPage({ setPage }) {
-  const { login } = useAuth();
+  const { login, loginWithToken, user } = useAuth();
+  const navigate = useNavigate();
   const [form, setForm] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-
+ 
+  // Navigate once user state is confirmed set after login
+  useEffect(() => {
+    if (user) navigate("/", { replace: true });
+  }, [user, navigate]);
+ 
   const handleChange = (e) =>
     setForm((f) => ({ ...f, [e.target.name]: e.target.value }));
-
+ 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
     setLoading(true);
     const result = await login(form.email, form.password);
     if (result.success) {
-      toast.success("You're now signed in.");
-      setPage("home");
+      toast.success("Welcome back! You're now signed in.");
+      // Navigation is handled by the useEffect above once user state updates
     } else {
       setError(result.error);
       toast.error(result.error);
@@ -47,9 +36,16 @@ export default function LoginPage({ setPage }) {
     setLoading(false);
   };
 
-  const handleGoogleClick = () => {
-    toast.info("Google sign-in coming soon — backend not connected yet.");
+  const handleGoogleSuccess = (data) => {
+    toast.success("Welcome back! You're now signed in.");
+    loginWithToken(data.access_token, data.user);
+    // Navigation handled by useEffect above
   };
+  const handleGoogleError = (msg) => {
+    toast.error(msg);
+    setError(msg);
+  };
+
 
   return (
     <div className="min-h-[80vh] flex items-center justify-center px-6 py-16">
@@ -125,7 +121,8 @@ export default function LoginPage({ setPage }) {
           {/* Google OAuth */}
           <GoogleButton
             label="Continue with Google"
-            onClick={handleGoogleClick}
+            onSuccess={handleGoogleSuccess}
+            onError={handleGoogleError}
           />
         </div>
 

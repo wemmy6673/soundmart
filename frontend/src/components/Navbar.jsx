@@ -16,7 +16,7 @@ export default function Navbar({ setPage }) {
 
   const handleLogout = () => {
     logout();
-    toast.success("You've been logged out.");
+    toast.info("You've been logged out.");
     setPage("home");
   };
 
