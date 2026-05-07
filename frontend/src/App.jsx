@@ -35,8 +35,8 @@ function AppContent() {
  
   return (
     <div className="min-h-screen bg-white font-sans">
-      <Header />
-      {!isAuthPage && <Navbar />}
+      
+      {!isAuthPage && <Header /> && <Navbar />}
       <Routes>
         <Route path="/"            element={<HomePage />} />
         <Route path="/shop"        element={<ShopPage />} />

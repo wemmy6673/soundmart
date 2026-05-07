@@ -100,12 +100,14 @@ async def google_auth(payload: GoogleAuthRequest, db: Session = Depends(get_db))
     avatar_url  = google_data.get("picture", "")
 
     # Check if user already exists (by Google ID or email)
-    user = (
+    existing = (
         db.query(User).filter(User.google_id == google_id).first()
         or db.query(User).filter(User.email == email).first()
     )
 
-    if user:
+    is_new = False
+    if existing:
+        user = existing
         # Update google_id and avatar if signing in with Google for the first time
         if not user.google_id:
             user.google_id = google_id
@@ -115,6 +117,7 @@ async def google_auth(payload: GoogleAuthRequest, db: Session = Depends(get_db))
         db.refresh(user)
     else:
         # New user — create account (no password needed)
+        is_new = True
         user = User(
             name=name,
             email=email,
@@ -128,7 +131,7 @@ async def google_auth(payload: GoogleAuthRequest, db: Session = Depends(get_db))
 
     token = create_access_token({"sub": str(user.id), "role": user.role})
 
-    return {"access_token": token, "token_type": "bearer", "user": user}
+    return {"access_token": token, "token_type": "bearer", "user": user, "is_new": is_new}
 
 
 # ── GET /auth/me ──────────────────────────────────────────────────────────────

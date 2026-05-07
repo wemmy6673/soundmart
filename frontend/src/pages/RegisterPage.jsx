@@ -8,24 +8,21 @@ import GoogleButton from "../components/GoogleButton";
 // ─────────────────────────────────────────────────────────────────────────────
 
 export default function RegisterPage({ setPage }) {
-  const { register, loginWithToken, user } = useAuth();
+  const { register, loginWithToken } = useAuth();
   const navigate = useNavigate();
   const [form, setForm] = useState({ name: "", email: "", password: "", confirm: "" });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
 
-  useEffect(() => {
-    if (user) navigate("/", { replace: true });
-  }, [user, navigate]);
-
+  
   const handleChange = (e) =>
     setForm((f) => ({ ...f, [e.target.name]: e.target.value }));
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
-
+ 
     if (form.password !== form.confirm) {
       setError("Passwords do not match.");
       return;
@@ -34,23 +31,27 @@ export default function RegisterPage({ setPage }) {
       setError("Password must be at least 6 characters.");
       return;
     }
-
+ 
     setLoading(true);
     const result = await register(form.name, form.email, form.password);
+    setLoading(false);
+ 
     if (result.success) {
       toast.success("Account created! Please sign in to continue.");
-      setPage("login");
+      navigate("/login");
     } else {
-      setError(result.error);
-      toast.error(result.error);
+      // Show error — stay on register page
+      const msg = result.error || "Registration failed. Please try again.";
+      setError(msg);
+      toast.error(msg);
     }
-    setLoading(false);
   };
 
   const handleGoogleSuccess = (data) => {
     toast.success("Account created");
     loginWithToken(data.access_token, data.user);
-    // Navigation handled by useEffect above
+    navigate("/login", { replace: true });
+    
   };
  
   const handleGoogleError = (msg) => {

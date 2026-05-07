@@ -36,9 +36,13 @@ export function AuthProvider({ children }) {
         body: JSON.stringify({ name, email, password }),
       });
       const data = await res.json();
-      if (!res.ok) return { success: false, error: data.detail || "Registration failed." };
-      localStorage.setItem("token", data.access_token);
-      setUser(data.user);
+      if (!res.ok) {
+        // FastAPI returns detail as string or array — handle both
+        const errorMsg = Array.isArray(data.detail)
+          ? data.detail[0]?.msg || "Registration failed."
+          : data.detail || "Registration failed.";
+        return { success: false, error: errorMsg };
+      }
       return { success: true };
     } catch {
       return { success: false, error: "Network error. Please try again." };
