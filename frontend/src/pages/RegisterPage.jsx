@@ -48,12 +48,15 @@ export default function RegisterPage({ setPage }) {
   };
 
   const handleGoogleSuccess = (data) => {
-    toast.success("Account created");
+    if (!data.is_new) {
+      toast.info("An account with this email already exists. Please sign in instead.");
+      navigate("/login", { replace: true });
+      return;
+    }
+    toast.success("Account created!");
     loginWithToken(data.access_token, data.user);
-    navigate("/login", { replace: true });
-    
+    navigate("/", { replace: true });
   };
- 
   const handleGoogleError = (msg) => {
     toast.error(msg);
     setError(msg);
