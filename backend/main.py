@@ -3,6 +3,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
 
 from routers.auth import router as auth_router
+from routers.products import router as products_router
+from routers.admin import router as admin_router
 
 load_dotenv()
 
@@ -13,8 +15,6 @@ app = FastAPI(
 )
 
 # ── CORS ──────────────────────────────────────────────────────────────────────
-# Allows the React frontend (running on localhost:5173) to talk to this API.
-# Update origins with your production frontend URL when you deploy.
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost:5173"],
@@ -25,6 +25,8 @@ app.add_middleware(
 
 # ── Routers ───────────────────────────────────────────────────────────────────
 app.include_router(auth_router)
+app.include_router(products_router)
+app.include_router(admin_router)
 
 
 # ── Health check ──────────────────────────────────────────────────────────────

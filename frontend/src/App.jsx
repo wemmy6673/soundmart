@@ -12,6 +12,10 @@ import ShopPage from "./pages/ShopPage";
 import ProductPage from "./pages/ProductPage";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
+import AdminDashboard from "./pages/admin/AdminDashboard";
+import AdminProducts from "./pages/admin/AdminProducts";
+import AdminOrders from "./pages/admin/AdminOrders";
+import AdminUsers from "./pages/admin/AdminUsers";
 import Header from "./components/Header";
 import ProtectedRoute from "./components/ProtectedRoute";
 
@@ -20,7 +24,11 @@ function AppContent() {
   const loading = useAuth();
   const location = useLocation();
   const AUTH_ROUTES = ["/login", "/register"];
+  const ADMIN_ROUTES = ["/admin", "/admin/products", "/admin/orders", "/admin/users", "/admin/products/new"];
+
   const isAuthPage = AUTH_ROUTES.includes(location.pathname);
+  const isAdminPage = location.pathname.startsWith("/admin");
+
  
   // if (loading) {
   //   return (
@@ -44,23 +52,16 @@ function AppContent() {
         <Route path="/login"       element={<LoginPage />} />
         <Route path="/register"    element={<RegisterPage />} />
  
-        {/* Admin routes — add pages here as you build them */}
-        <Route
-          path="/admin"
-          element={
-            <ProtectedRoute role="admin">
-              <div className="max-w-7xl mx-auto px-6 py-12">
-                <h1 className="font-display text-4xl font-semibold">Admin Dashboard</h1>
-                <p className="text-gray-400 mt-2">Coming soon.</p>
-              </div>
-            </ProtectedRoute>
-          }
-        />
+        {/* Admin routes */}
+        <Route path="/admin" element={<ProtectedRoute role="admin"><AdminDashboard /></ProtectedRoute>} />
+        <Route path="/admin/products" element={<ProtectedRoute role="admin"><AdminProducts /></ProtectedRoute>} />
+        <Route path="/admin/orders" element={<ProtectedRoute role="admin"><AdminOrders /></ProtectedRoute>} />
+        <Route path="/admin/users" element={<ProtectedRoute role="admin"><AdminUsers /></ProtectedRoute>} />
  
         {/* Catch-all → redirect to home */}
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
-      {!isAuthPage && <CartDrawer />}
+      {!isAuthPage && <CartDrawer /> && !isAdminPage}
 
       <ToastContainer
         position="top-right"
