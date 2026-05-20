@@ -1,8 +1,23 @@
-import ProductCard from "../components/ProductCard";
-import products from "../data/product";
-import lala from "../images/lala.png";
 
-export default function HomePage({ setPage, setViewProduct }) {
+import { Link } from "react-router-dom";
+import ProductCard from "../components/ProductCard";
+import { useProducts } from "../hooks/UseProducts";
+
+
+function ProductSkeleton() {
+  return (
+    <div className="animate-pulse">
+      <div className="bg-gray-100 rounded-2xl mb-4" style={{ aspectRatio: "1" }} />
+      <div className="h-3 bg-gray-100 rounded w-1/3 mb-2" />
+      <div className="h-4 bg-gray-100 rounded w-2/3 mb-2" />
+      <div className="h-3 bg-gray-100 rounded w-1/2" />
+    </div>
+  );
+}
+
+export default function HomePage({ }) {
+    const { products, loading } = useProducts({ limit: 3 });
+
   return (
     <>
        {/* Hero */}
@@ -34,7 +49,7 @@ export default function HomePage({ setPage, setViewProduct }) {
             <div
               className="w-full max-w-md rounded-3xl overflow-hidden flex items-center justify-center"
             >
-              <img src={lala} alt="" />
+              
 
             </div>
           </div>
@@ -46,44 +61,45 @@ export default function HomePage({ setPage, setViewProduct }) {
       <section className="mx-44 py-4 mt-6 mb-2">
         <div className="flex items-center justify-between mb-8">
           <div>
-            <h2 className="font-display text-4xl font-semibold">
-              HeadPhones for you
-            </h2>
-            <p className="text-gray-400 mt-1 text-sm">
-              Our most-loved headphones this season
-            </p>
+            <h2 className="font-display text-4xl font-semibold">Featured Products</h2>
+            <p className="text-gray-400 mt-1 text-sm">Our most-loved headphones this season</p>
           </div>
-          <button
-            onClick={() => setPage("shop")}
-            className="text-sm font-medium underline underline-offset-4 text-gray-600 hover:text-black"
-          >
-            View all
-          </button>
+          {products.length > 0 && (
+            <Link
+              to="/shop"
+              className="text-sm font-medium underline underline-offset-4 text-gray-600 hover:text-black"
+            >
+              View all
+            </Link>
+          )}
         </div>
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-6 md:gap-8">
-          {products.slice(0, 3).map((p) => (
-            <ProductCard key={p.id} product={p} onView={setViewProduct} />
-          ))}
-        </div>
-      </section>
-
-      {/* Limited Edition Banner */}
-      <section className="bg-gray-950 text-white py-20 px-6 mt-16">
-        <div className="max-w-3xl mx-auto text-center">
-          <p className="text-xs uppercase tracking-[0.25em] text-gray-400 font-medium mb-4">
-            Limited Edition
-          </p>
-          <h2 className="font-display text-5xl font-semibold mb-6">
-            Studio Pro XL
-          </h2>
-          <p className="text-gray-400 mb-8">
-            Planar magnetic drivers. Studio-grade reference sound. Only 200
-            units available.
-          </p>
-          <button className="bg-white text-black px-10 py-4 rounded-full text-sm font-semibold hover:bg-gray-100 transition-colors">
-            Shop Limited Edition
-          </button>
-        </div>
+ 
+        {/* Loading */}
+        {loading && (
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-6 md:gap-8">
+            {[1, 2, 3].map((i) => <ProductSkeleton key={i} />)}
+          </div>
+        )}
+ 
+        {/* Empty state */}
+        {!loading && products.length === 0 && (
+          <div className="text-center py-20 border border-dashed border-gray-200 rounded-2xl">
+            <svg width="48" height="48" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24" className="mx-auto mb-4 text-gray-300">
+              <path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z" />
+            </svg>
+            <p className="text-gray-400 font-medium">No products yet</p>
+            <p className="text-gray-300 text-sm mt-1">Check back soon — new arrivals coming.</p>
+          </div>
+        )}
+ 
+        {/* Products grid */}
+        {!loading && products.length > 0 && (
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-6 md:gap-8">
+            {products.map((p) => (
+              <ProductCard key={p.id} product={p} />
+            ))}
+          </div>
+        )}
       </section>
     </>
   );
