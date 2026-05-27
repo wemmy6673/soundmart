@@ -2,6 +2,7 @@
 import { Link } from "react-router-dom";
 import ProductCard from "../components/ProductCard";
 import { useProducts } from "../hooks/UseProducts";
+import Lala from "../images/lala.png";
 
 
 function ProductSkeleton() {
@@ -49,8 +50,7 @@ export default function HomePage({ }) {
             <div
               className="w-full max-w-md rounded-3xl overflow-hidden flex items-center justify-center"
             >
-              
-
+              <img src={Lala} alt="Headphones" className="w-full h-auto" />
             </div>
           </div>
  
