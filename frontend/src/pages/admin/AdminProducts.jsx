@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { toast } from "react-toastify";
 import AdminLayout from "./AdminLayout";
+import ImageUpload from "../../components/ImageUpload";
 import { useAuth } from "../../context/Authcontext";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
@@ -172,13 +173,14 @@ function ProductModal({ product, onClose, onSave }) {
             </div>
           </div>
 
-          {/* Image URL */}
+          {/* Image Upload */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1.5">Image URL</label>
-            <input
-              type="url" name="image_url" value={form.image_url} onChange={handleChange}
-              placeholder="https://res.cloudinary.com/..."
-              className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm outline-none focus:border-gray-900 transition-colors"
+            <label className="block text-sm font-medium text-gray-700 mb-1.5">
+              Product Image
+            </label>
+            <ImageUpload
+              currentUrl={form.image_url}
+              onUpload={(url) => setForm((f) => ({ ...f, image_url: url }))}
             />
           </div>
 
